@@ -37,10 +37,4 @@ func main() {
 	// db.Create(&models.Item{Name: "Shield", Price: 34, Action: "Defend", UserBuyer: userFirst.ID, UserSeller: userLast.ID})
 	// db.Create(&models.Item{Name: "Sword", Price: 22, Action: "Attack", UserBuyer: userLast.ID, UserSeller: userFirst.ID})
 
-	var items []models.Item
-	db.Model(&userFirst).Related(&items, "SoldItems")
-	items[0].PrettyPrint()
-	db.Model(&userFirst).Related(&items, "BoughtItems")
-	items[0].PrettyPrint()
-
 }
