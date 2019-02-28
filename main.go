@@ -21,8 +21,9 @@ func main() {
 	// Migrate the schema
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Item{})
+	db.AutoMigrate(&models.Game{})
 
-	// Create
+	// Create Users
 	// db.Create(&models.User{Name: "Bob", Rank: "Basic"})
 	// db.Create(&models.User{Name: "Dave", Rank: "Basic"})
 	// db.Create(&models.User{Name: "Steve", Rank: "Basic"})
@@ -30,11 +31,16 @@ func main() {
 
 	var userFirst models.User
 	var userLast models.User
-	db.First(&userFirst)
+	db.Preload("JoinedGames.Players").First(&userFirst)
 	db.Last(&userLast)
 
-	// Create
+	// Create Items
 	// db.Create(&models.Item{Name: "Shield", Price: 34, Action: "Defend", UserBuyer: userFirst.ID, UserSeller: userLast.ID})
 	// db.Create(&models.Item{Name: "Sword", Price: 22, Action: "Attack", UserBuyer: userLast.ID, UserSeller: userFirst.ID})
 
+	//Create Games
+	// newGame := &models.Game{Name: "FunGame", Active: true, UserCreator: userFirst.ID, Players: []models.User{userFirst, userLast}}
+
+	// db.Create(&newGame)
+	fmt.Println(userFirst.JoinedGames[0].Players)
 }

@@ -10,6 +10,7 @@ type User struct {
 	SoldItems    []Item `gorm:"foreignkey:UserSeller"`
 	BoughtItems  []Item `gorm:"foreignkey:UserBuyer"`
 	CreatedGames []Game `gorm:"foreignkey:UserCreator"`
+	JoinedGames  []Game `gorm:"many2many:joined_games"`
 }
 
 //Deficit calcs users profit
