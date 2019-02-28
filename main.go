@@ -37,10 +37,24 @@ func main() {
 	// Create Items
 	// db.Create(&models.Item{Name: "Shield", Price: 34, Action: "Defend", UserBuyer: userFirst.ID, UserSeller: userLast.ID})
 	// db.Create(&models.Item{Name: "Sword", Price: 22, Action: "Attack", UserBuyer: userLast.ID, UserSeller: userFirst.ID})
+	// db.Create(&models.Item{Name: "Bag", Price: 31, Action: "Hold"})
+	// db.Create(&models.Item{Name: "Clock", Price: 98, Action: "Time"})
 
 	//Create Games
 	// newGame := &models.Game{Name: "FunGame", Active: true, UserCreator: userFirst.ID, Players: []models.User{userFirst, userLast}}
-
 	// db.Create(&newGame)
-	fmt.Println(userFirst.JoinedGames[0].Players)
+
+	var item models.Item
+	db.Last(&item)
+
+	user := models.User{
+		Name: "???",
+		Rank: "Master",
+		BoughtItems: []models.Item{
+			item,
+		},
+	}
+
+	db.Create(&user)
+	db.Save(&user)
 }
