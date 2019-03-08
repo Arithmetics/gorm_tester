@@ -2,7 +2,7 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-//User struct
+//User struct (Arithmetics, MrCream, etc...)
 type User struct {
 	gorm.Model
 	Name         string

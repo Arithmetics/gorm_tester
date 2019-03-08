@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-//Item struct: belongs to User
+//Item struct: belongs to User (placeholder for testing)
 type Item struct {
 	gorm.Model
 	UserSeller uint

@@ -2,7 +2,7 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-//Game struct
+//Game struct (FirstGame, SecondGame, etc...)
 type Game struct {
 	gorm.Model
 	UserCreator uint
