@@ -20,41 +20,40 @@ func main() {
 
 	// Migrate the schema
 	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.Item{})
+	db.AutoMigrate(&models.Bid{})
 	db.AutoMigrate(&models.Game{})
+	db.AutoMigrate(&models.Faction{})
+	db.AutoMigrate(&models.Track{})
 
-	// Create Users
+	// *******************************
+	/////////////  Create Users
 	// db.Create(&models.User{Name: "Bob", Rank: "Basic"})
 	// db.Create(&models.User{Name: "Dave", Rank: "Basic"})
-	// db.Create(&models.User{Name: "Steve", Rank: "Basic"})
-	// db.Create(&models.User{Name: "Brock", Rank: "Advanced"})
+	// db.Create(&models.User{Name: "Sara", Rank: "Basic"})
+	// db.Create(&models.User{Name: "Monkee", Rank: "Advanced"})
 
-	var userFirst models.User
-	var userLast models.User
-	db.Preload("JoinedGames.Players").First(&userFirst)
-	db.Last(&userLast)
+	// var user models.User
+	// db.First(&user)
 
-	// Create Items
-	// db.Create(&models.Item{Name: "Shield", Price: 34, Action: "Defend", UserBuyer: userFirst.ID, UserSeller: userLast.ID})
-	// db.Create(&models.Item{Name: "Sword", Price: 22, Action: "Attack", UserBuyer: userLast.ID, UserSeller: userFirst.ID})
-	// db.Create(&models.Item{Name: "Bag", Price: 31, Action: "Hold"})
-	// db.Create(&models.Item{Name: "Clock", Price: 98, Action: "Time"})
+	// fmt.Println(user.CreateGame("CoolGame", db))
 
-	//Create Games
-	// newGame := &models.Game{Name: "FunGame", Active: true, UserCreator: userFirst.ID, Players: []models.User{userFirst, userLast}}
-	// db.Create(&newGame)
+	// *******************************
+	////////////  Join Game
 
-	var item models.Item
-	db.Last(&item)
+	// var user models.User
 
-	user := models.User{
-		Name: "???",
-		Rank: "Master",
-		BoughtItems: []models.Item{
-			item,
-		},
-	}
+	// db.Find(&user, 3)
+	// user.JoinGame(1, db)
+	// db.Find(&user, 4)
+	// user.JoinGame(1, db)
+	// db.Find(&user, 5)
+	// user.JoinGame(1, db)
+	// db.Find(&user, 6)
+	// user.JoinGame(1, db)
 
-	db.Create(&user)
-	db.Save(&user)
+	// *****
+	//////// SEtup game
+	var game models.Game
+	db.Preload("Players").First(&game)
+	game.AssignFactions(db)
 }

@@ -9,4 +9,23 @@ type Game struct {
 	Players     []User `gorm:"many2many:joined_games"`
 	Name        string
 	Active      bool
+	Factions    []Faction
+}
+
+// AssignFactions creates a faction for each user in the game
+func (game Game) AssignFactions(db *gorm.DB) error {
+	factionNames := []string{"Stark", "Greyjoy", "Lannister", "Barratheon", "Martell", "Tyrell"}
+
+	for i, name := range factionNames {
+		faction := Faction{
+			Name:        name,
+			PowerTokens: 10,
+			GameID:      game.ID,
+			User:        game.Players[i],
+		}
+
+		db.Create(&faction)
+	}
+
+	return nil
 }
