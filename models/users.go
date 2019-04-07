@@ -25,6 +25,26 @@ func (user User) CreateGame(gameName string, db *gorm.DB) (uint, error) {
 	}
 	err := db.Create(&newGame).Error
 
+	// create tracks here, maybe move to method on game??
+	track1 := Track{
+		Name:   "IronThrone",
+		GameID: newGame.ID,
+	}
+
+	track2 := Track{
+		Name:   "Fiefdoms",
+		GameID: newGame.ID,
+	}
+
+	track3 := Track{
+		Name:   "KingsCourt",
+		GameID: newGame.ID,
+	}
+
+	db.Create(&track1)
+	db.Create(&track2)
+	db.Create(&track3)
+
 	if err != nil {
 		return 0, err
 	}
@@ -48,4 +68,13 @@ func (user User) JoinGame(gameID uint, db *gorm.DB) error {
 	err := db.Save(&game).Error
 
 	return err
+}
+
+//Faction For a certain user gets the Faction they are playing in that game
+func (user User) Faction(gameID uint, db *gorm.DB) *Faction {
+	var faction Faction
+
+	db.Preload("Bid").Preload("Game.Factions").Where(&Faction{UserID: user.ID, GameID: gameID}).First(&faction)
+
+	return &faction
 }

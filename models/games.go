@@ -1,6 +1,11 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"math/rand"
+	"time"
+
+	"github.com/jinzhu/gorm"
+)
 
 //Game struct (FirstGame, SecondGame, etc...)
 type Game struct {
@@ -10,11 +15,14 @@ type Game struct {
 	Name        string
 	Active      bool
 	Factions    []Faction
+	Tracks      []Track
 }
 
 // AssignFactions creates a faction for each user in the game
 func (game Game) AssignFactions(db *gorm.DB) error {
 	factionNames := []string{"Stark", "Greyjoy", "Lannister", "Barratheon", "Martell", "Tyrell"}
+
+	factionNames = shuffle(factionNames)
 
 	for i, name := range factionNames {
 		faction := Faction{
@@ -28,4 +36,14 @@ func (game Game) AssignFactions(db *gorm.DB) error {
 	}
 
 	return nil
+}
+
+func shuffle(vals []string) []string {
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	ret := make([]string, len(vals))
+	perm := r.Perm(len(vals))
+	for i, randIndex := range perm {
+		ret[i] = vals[randIndex]
+	}
+	return ret
 }

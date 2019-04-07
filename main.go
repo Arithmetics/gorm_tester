@@ -26,11 +26,13 @@ func main() {
 	db.AutoMigrate(&models.Track{})
 
 	// *******************************
-	/////////////  Create Users
+	///////////  Create Users
 	// db.Create(&models.User{Name: "Bob", Rank: "Basic"})
 	// db.Create(&models.User{Name: "Dave", Rank: "Basic"})
 	// db.Create(&models.User{Name: "Sara", Rank: "Basic"})
 	// db.Create(&models.User{Name: "Monkee", Rank: "Advanced"})
+	// db.Create(&models.User{Name: "Feez", Rank: "Advanced"})
+	// db.Create(&models.User{Name: "Donkey", Rank: "Advanced"})
 
 	// var user models.User
 	// db.First(&user)
@@ -39,21 +41,40 @@ func main() {
 
 	// *******************************
 	////////////  Join Game
+	var game models.Game
+	var user models.User
 
+	db.First(&game)
+
+	db.Find(&user, 7)
+	user.JoinGame(game.ID, db)
+	db.Find(&user, 8)
+	user.JoinGame(game.ID, db)
+	db.Find(&user, 9)
+	user.JoinGame(game.ID, db)
+	db.Find(&user, 10)
+	user.JoinGame(game.ID, db)
+	db.Find(&user, 11)
+	user.JoinGame(game.ID, db)
+	db.Find(&user, 12)
+	user.JoinGame(game.ID, db)
+	// *****
+	//////// Setup game
+	// db.Preload("Players").First(&game)
+	// game.AssignFactions(db)
+
+	/// ****************
+	////// Get faction for the player in the game
+
+	// var game models.Game
 	// var user models.User
 
-	// db.Find(&user, 3)
-	// user.JoinGame(1, db)
-	// db.Find(&user, 4)
-	// user.JoinGame(1, db)
-	// db.Find(&user, 5)
-	// user.JoinGame(1, db)
-	// db.Find(&user, 6)
-	// user.JoinGame(1, db)
+	// db.First(&user)
+	// db.First(&game)
+	// fmt.Println(user.ID)
+	// fmt.Println(game.ID)
 
-	// *****
-	//////// SEtup game
-	var game models.Game
-	db.Preload("Players").First(&game)
-	game.AssignFactions(db)
+	// faction := user.Faction(game.ID, db)
+
+	// faction.MakeBid(2)
 }

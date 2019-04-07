@@ -6,6 +6,8 @@ import "github.com/jinzhu/gorm"
 type Track struct {
 	gorm.Model
 	Name        string
+	Game        Game
+	GameID      uint
 	Bids        []Bid
 	Position1   Faction
 	Position1ID uint
