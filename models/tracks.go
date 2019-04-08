@@ -1,6 +1,11 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"fmt"
+	"sort"
+
+	"github.com/jinzhu/gorm"
+)
 
 //Track is the power track (Sword, Throne, Raven)
 type Track struct {
@@ -21,4 +26,37 @@ type Track struct {
 	Position5ID uint
 	Position6   Faction
 	Position6ID uint
+}
+
+// BiddingComplete is true if all players have placed a bid
+func (track Track) BiddingComplete() bool {
+	if len(track.Bids) < 6 {
+		return false
+	}
+
+	return true
+}
+
+// SettleBids ends bidding, fills the positions, and adjusts everyones power tokens
+func (track Track) SettleBids(db *gorm.DB) error {
+	db.Preload("Bids").Find(&track)
+
+	if !track.BiddingComplete() {
+		return fmt.Errorf("Track is not ready for bidding to end")
+	}
+
+	orderedBids := track.Bids
+	sort.Sort(byAmount())
+}
+
+type byAmount []Bid
+
+func (s byAmount) Len() int {
+	return len(s)
+}
+func (s byAmount) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+func (s byAmount) Less(i, j int) bool {
+	return s[i] < s[j]
 }

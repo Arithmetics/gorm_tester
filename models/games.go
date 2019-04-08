@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -20,6 +21,11 @@ type Game struct {
 
 // AssignFactions creates a faction for each user in the game
 func (game Game) AssignFactions(db *gorm.DB) error {
+
+	if len(game.Players) < 6 {
+		return fmt.Errorf("Not enough players to start this game")
+	}
+
 	factionNames := []string{"Stark", "Greyjoy", "Lannister", "Barratheon", "Martell", "Tyrell"}
 
 	factionNames = shuffle(factionNames)

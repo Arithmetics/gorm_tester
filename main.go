@@ -41,23 +41,21 @@ func main() {
 
 	// *******************************
 	////////////  Join Game
-	var game models.Game
-	var user models.User
+	// var game models.Game
+	// var user models.User
 
-	db.First(&game)
+	// db.First(&game)
 
-	db.Find(&user, 7)
-	user.JoinGame(game.ID, db)
-	db.Find(&user, 8)
-	user.JoinGame(game.ID, db)
-	db.Find(&user, 9)
-	user.JoinGame(game.ID, db)
-	db.Find(&user, 10)
-	user.JoinGame(game.ID, db)
-	db.Find(&user, 11)
-	user.JoinGame(game.ID, db)
-	db.Find(&user, 12)
-	user.JoinGame(game.ID, db)
+	// db.Find(&user, 8)
+	// user.JoinGame(game.ID, db)
+	// db.Find(&user, 9)
+	// user.JoinGame(game.ID, db)
+	// db.Find(&user, 10)
+	// user.JoinGame(game.ID, db)
+	// db.Find(&user, 11)
+	// user.JoinGame(game.ID, db)
+	// db.Find(&user, 12)
+	// user.JoinGame(game.ID, db)
 	// *****
 	//////// Setup game
 	// db.Preload("Players").First(&game)
@@ -76,5 +74,20 @@ func main() {
 
 	// faction := user.Faction(game.ID, db)
 
-	// faction.MakeBid(2)
+	// fmt.Println(faction.MakeBid(10, "IronThrone", db))
+
+	// var bid models.Bid
+	// db.First(&bid)
+
+	// fmt.Printf("%+v", bid)
+
+	var track models.Track
+	db.First(&track)
+	fmt.Printf("%+v", &track.Bids)
+
+	fmt.Println("XXXXXX")
+
+	db.Preload("Bids").Find(&track)
+
+	fmt.Printf("%+v", &track.Bids)
 }
