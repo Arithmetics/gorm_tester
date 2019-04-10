@@ -44,6 +44,25 @@ func (game Game) AssignFactions(db *gorm.DB) error {
 	return nil
 }
 
+func (game Game) CreateTracks (db *gorm.DB) error {
+	track1 := Track{
+		Name: "IronThrone",
+		GameID: game.ID,
+	}
+	track2 := Track{
+		Name: "Fiefdoms",
+		GameID: game.ID,
+	}
+	track3 := Track{
+		Name: "KingsCourt",
+		GameID: game.ID
+	}
+	
+	db.Save(&track1)
+	db.Save(&track2)
+	db.Save(&track3)
+}
+
 func shuffle(vals []string) []string {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	ret := make([]string, len(vals))

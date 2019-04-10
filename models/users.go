@@ -55,13 +55,18 @@ func (user User) CreateGame(gameName string, db *gorm.DB) (uint, error) {
 // JoinGame is used to join an existing game as a player
 func (user User) JoinGame(gameID uint, db *gorm.DB) error {
 	var game Game
-	db.First(&game, gameID)
+	db.Preload("Players").First(&game, gameID)
 
 	if len(game.Players) > 5 {
 		return fmt.Errorf("No open spots in this game")
 	}
 
 	// need to check if player is already in game here as well
+	for _, player := range game.Players {
+		if player.ID == user.ID {
+			return fmt.Errorf("User has already joined the game")
+		}
+	}
 
 	game.Players = append(game.Players, user)
 

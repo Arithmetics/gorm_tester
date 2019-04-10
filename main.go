@@ -28,29 +28,9 @@ func main() {
 	// *******************************
 	createUsersAndGame(db)
 	// *******************************
-
+	allUsersJoinGame(db)
 	// *******************************
 
-	// *******************************
-
-	// *******************************
-	////////////  Join Game
-	// var game models.Game
-	// var user models.User
-
-	// db.First(&game)
-
-	// db.Find(&user, 8)
-	// user.JoinGame(game.ID, db)
-	// db.Find(&user, 9)
-	// user.JoinGame(game.ID, db)
-	// db.Find(&user, 10)
-	// user.JoinGame(game.ID, db)
-	// db.Find(&user, 11)
-	// user.JoinGame(game.ID, db)
-	// db.Find(&user, 12)
-	// user.JoinGame(game.ID, db)
-	// *****
 	//////// Setup game
 	// db.Preload("Players").First(&game)
 	// game.AssignFactions(db)
@@ -85,7 +65,6 @@ func main() {
 }
 
 func createUsersAndGame(db *gorm.DB) {
-	///////////  Create Users
 	db.Create(&models.User{Name: "Bob", Rank: "Basic"})
 	db.Create(&models.User{Name: "Dave", Rank: "Basic"})
 	db.Create(&models.User{Name: "Sara", Rank: "Basic"})
@@ -97,4 +76,24 @@ func createUsersAndGame(db *gorm.DB) {
 	db.First(&user)
 
 	fmt.Println(user.CreateGame("CoolGame", db))
+}
+
+func allUsersJoinGame(db *gorm.DB) {
+	var game models.Game
+	db.First(&game)
+
+	users := []models.User{}
+	db.Find(&users)
+
+	for _, user := range users {
+		user.JoinGame(game.ID, db)
+	}
+}
+
+func setupGame(db *gorm.DB) {
+	var game models.Game
+
+	db.Preload("Players").First(&game)
+
+	game.AssignFactions(db)
 }
