@@ -45,8 +45,34 @@ func (track Track) SettleBids(db *gorm.DB) error {
 		return fmt.Errorf("Track is not ready for bidding to end")
 	}
 
-	orderedBids := track.Bids
-	sort.Sort(byAmount())
+	sort.Sort(byAmount(track.Bids))
+
+	track.Position1ID = track.Bids[0].FactionID
+	track.Position2ID = track.Bids[1].FactionID
+	track.Position3ID = track.Bids[2].FactionID
+	track.Position4ID = track.Bids[3].FactionID
+	track.Position5ID = track.Bids[4].FactionID
+	track.Position6ID = track.Bids[5].FactionID
+
+	err := db.Save(&track).Error
+
+	if err != nil {
+		return err
+	}
+
+	for _, bid := range track.Bids {
+		var faction Faction
+		db.Find(&faction, bid.ID)
+
+		faction.PowerTokens = faction.PowerTokens - bid.Amount
+
+		db.Save(&faction)
+
+		db.Delete(&bid)
+	}
+
+	return nil
+
 }
 
 type byAmount []Bid
@@ -58,5 +84,5 @@ func (s byAmount) Swap(i, j int) {
 	s[i], s[j] = s[j], s[i]
 }
 func (s byAmount) Less(i, j int) bool {
-	return s[i] < s[j]
+	return s[i].Amount > s[j].Amount
 }

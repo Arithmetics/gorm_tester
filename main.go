@@ -26,18 +26,12 @@ func main() {
 	db.AutoMigrate(&models.Track{})
 
 	// *******************************
-	///////////  Create Users
-	// db.Create(&models.User{Name: "Bob", Rank: "Basic"})
-	// db.Create(&models.User{Name: "Dave", Rank: "Basic"})
-	// db.Create(&models.User{Name: "Sara", Rank: "Basic"})
-	// db.Create(&models.User{Name: "Monkee", Rank: "Advanced"})
-	// db.Create(&models.User{Name: "Feez", Rank: "Advanced"})
-	// db.Create(&models.User{Name: "Donkey", Rank: "Advanced"})
+	createUsersAndGame(db)
+	// *******************************
 
-	// var user models.User
-	// db.First(&user)
+	// *******************************
 
-	// fmt.Println(user.CreateGame("CoolGame", db))
+	// *******************************
 
 	// *******************************
 	////////////  Join Game
@@ -67,14 +61,14 @@ func main() {
 	// var game models.Game
 	// var user models.User
 
-	// db.First(&user)
+	// db.Find(&user, 12)
 	// db.First(&game)
 	// fmt.Println(user.ID)
 	// fmt.Println(game.ID)
 
 	// faction := user.Faction(game.ID, db)
 
-	// fmt.Println(faction.MakeBid(10, "IronThrone", db))
+	// fmt.Println(faction.MakeBid(5, "IronThrone", db))
 
 	// var bid models.Bid
 	// db.First(&bid)
@@ -83,11 +77,24 @@ func main() {
 
 	var track models.Track
 	db.First(&track)
-	fmt.Printf("%+v", &track.Bids)
 
-	fmt.Println("XXXXXX")
+	// fmt.Println(track.SettleBids(db))
 
-	db.Preload("Bids").Find(&track)
+	fmt.Printf("%+v", &track)
 
-	fmt.Printf("%+v", &track.Bids)
+}
+
+func createUsersAndGame(db *gorm.DB) {
+	///////////  Create Users
+	db.Create(&models.User{Name: "Bob", Rank: "Basic"})
+	db.Create(&models.User{Name: "Dave", Rank: "Basic"})
+	db.Create(&models.User{Name: "Sara", Rank: "Basic"})
+	db.Create(&models.User{Name: "Monkee", Rank: "Advanced"})
+	db.Create(&models.User{Name: "Feez", Rank: "Advanced"})
+	db.Create(&models.User{Name: "Donkey", Rank: "Advanced"})
+
+	var user models.User
+	db.First(&user)
+
+	fmt.Println(user.CreateGame("CoolGame", db))
 }
