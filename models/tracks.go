@@ -14,6 +14,7 @@ type Track struct {
 	Game        Game
 	GameID      uint
 	Bids        []Bid
+	BiddingOpen bool
 	Position1   Faction
 	Position1ID uint
 	Position2   Faction
@@ -62,7 +63,7 @@ func (track Track) SettleBids(db *gorm.DB) error {
 
 	for _, bid := range track.Bids {
 		var faction Faction
-		db.Find(&faction, bid.ID)
+		db.Find(&faction, bid.FactionID)
 
 		faction.PowerTokens = faction.PowerTokens - bid.Amount
 

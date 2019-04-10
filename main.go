@@ -26,41 +26,16 @@ func main() {
 	db.AutoMigrate(&models.Track{})
 
 	// *******************************
-	createUsersAndGame(db)
+	// createUsersAndGame(db)
 	// *******************************
-	allUsersJoinGame(db)
+	// allUsersJoinGame(db)
 	// *******************************
-
-	//////// Setup game
-	// db.Preload("Players").First(&game)
-	// game.AssignFactions(db)
-
-	/// ****************
-	////// Get faction for the player in the game
-
-	// var game models.Game
-	// var user models.User
-
-	// db.Find(&user, 12)
-	// db.First(&game)
-	// fmt.Println(user.ID)
-	// fmt.Println(game.ID)
-
-	// faction := user.Faction(game.ID, db)
-
-	// fmt.Println(faction.MakeBid(5, "IronThrone", db))
-
-	// var bid models.Bid
-	// db.First(&bid)
-
-	// fmt.Printf("%+v", bid)
-
-	var track models.Track
-	db.First(&track)
-
-	// fmt.Println(track.SettleBids(db))
-
-	fmt.Printf("%+v", &track)
+	// setupGame(db)
+	// *******************************
+	// bidOnIronThrone(db)
+	bids := []models.Bid{}
+	db.Debug().Find(&bids)
+	fmt.Println(len(bids))
 
 }
 
@@ -96,4 +71,21 @@ func setupGame(db *gorm.DB) {
 	db.Preload("Players").First(&game)
 
 	game.AssignFactions(db)
+}
+
+func bidOnIronThrone(db *gorm.DB) {
+	var factions []models.Faction
+	db.Find(&factions)
+	var game models.Game
+	db.Preload("Tracks").First(&game)
+
+	for i := 0; i < 6; i++ {
+		fmt.Println(factions[i].MakeBid(i, "IronThrone", db))
+	}
+
+	var track models.Track
+
+	db.Where(models.Track{Name: "IronThrone"}).First(&track)
+	fmt.Printf("%+v\n", track.ID)
+	fmt.Println(track.SettleBids(db))
 }

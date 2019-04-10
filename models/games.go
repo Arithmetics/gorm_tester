@@ -17,6 +17,7 @@ type Game struct {
 	Active      bool
 	Factions    []Faction
 	Tracks      []Track
+	GameState   string
 }
 
 // AssignFactions creates a faction for each user in the game
@@ -44,23 +45,34 @@ func (game Game) AssignFactions(db *gorm.DB) error {
 	return nil
 }
 
-func (game Game) CreateTracks (db *gorm.DB) error {
+// CreateTracks is part of the start up sequernce. Creates tracks for a game in their default state
+func (game Game) CreateTracks(db *gorm.DB) error {
 	track1 := Track{
-		Name: "IronThrone",
-		GameID: game.ID,
+		Name:        "IronThrone",
+		GameID:      game.ID,
+		BiddingOpen: false,
 	}
 	track2 := Track{
-		Name: "Fiefdoms",
-		GameID: game.ID,
+		Name:        "Fiefdoms",
+		GameID:      game.ID,
+		BiddingOpen: false,
 	}
 	track3 := Track{
-		Name: "KingsCourt",
-		GameID: game.ID
+		Name:        "KingsCourt",
+		GameID:      game.ID,
+		BiddingOpen: false,
 	}
-	
+
 	db.Save(&track1)
 	db.Save(&track2)
 	db.Save(&track3)
+
+	return nil
+}
+
+//OpenTrackBidding allows bidding to begin on a track
+func (game Game) OpenTrackBidding(trackname string, db *gorm.DB) error {
+	return nil
 }
 
 func shuffle(vals []string) []string {

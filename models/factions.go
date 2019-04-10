@@ -31,6 +31,10 @@ func (faction Faction) MakeBid(amount int, trackName string, db *gorm.DB) error 
 	if track.ID == 0 {
 		return fmt.Errorf("no track found to bid on")
 	}
+
+	if !track.BiddingOpen {
+		return fmt.Errorf("This track is not open for bidding")
+	}
 	// cant make two bids on the same track
 	for _, bid := range track.Bids {
 		if bid.FactionID == faction.ID {
@@ -44,9 +48,7 @@ func (faction Faction) MakeBid(amount int, trackName string, db *gorm.DB) error 
 		Amount:    amount,
 	}
 
-	db.Create(&bid)
+	err := db.Create(&bid).Error
 
-	// update faction to lose power tokens, maybe later after track resolves though so they wont be query able?
-
-	return nil
+	return err
 }
