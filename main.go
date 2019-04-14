@@ -26,16 +26,13 @@ func main() {
 	db.AutoMigrate(&models.Track{})
 
 	// *******************************
-	// createUsersAndGame(db)
+	createUsersAndGame(db)
 	// *******************************
-	// allUsersJoinGame(db)
+	allUsersJoinGame(db)
 	// *******************************
-	// setupGame(db)
+	setupGame(db)
 	// *******************************
-	// bidOnIronThrone(db)
-	bids := []models.Bid{}
-	db.Debug().Find(&bids)
-	fmt.Println(len(bids))
+	bidOnIronThrone(db)
 
 }
 

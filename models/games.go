@@ -50,7 +50,7 @@ func (game Game) CreateTracks(db *gorm.DB) error {
 	track1 := Track{
 		Name:        "IronThrone",
 		GameID:      game.ID,
-		BiddingOpen: false,
+		BiddingOpen: true,
 	}
 	track2 := Track{
 		Name:        "Fiefdoms",
@@ -63,9 +63,9 @@ func (game Game) CreateTracks(db *gorm.DB) error {
 		BiddingOpen: false,
 	}
 
-	db.Save(&track1)
-	db.Save(&track2)
-	db.Save(&track3)
+	db.Create(&track1)
+	db.Create(&track2)
+	db.Create(&track3)
 
 	return nil
 }

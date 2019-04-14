@@ -25,31 +25,9 @@ func (user User) CreateGame(gameName string, db *gorm.DB) (uint, error) {
 	}
 	err := db.Create(&newGame).Error
 
-	// create tracks here, maybe move to method on game??
-	track1 := Track{
-		Name:   "IronThrone",
-		GameID: newGame.ID,
-	}
+	newGame.CreateTracks(db)
 
-	track2 := Track{
-		Name:   "Fiefdoms",
-		GameID: newGame.ID,
-	}
-
-	track3 := Track{
-		Name:   "KingsCourt",
-		GameID: newGame.ID,
-	}
-
-	db.Create(&track1)
-	db.Create(&track2)
-	db.Create(&track3)
-
-	if err != nil {
-		return 0, err
-	}
-
-	return newGame.ID, nil
+	return newGame.ID, err
 }
 
 // JoinGame is used to join an existing game as a player

@@ -76,6 +76,20 @@ func (track Track) SettleBids(db *gorm.DB) error {
 
 }
 
+// OpenBidding starts bidding track
+func (track Track) OpenBidding(db *gorm.DB) {
+	track.BiddingOpen = true
+
+	db.Save(&track)
+}
+
+// CloseBidding closes bidding on the track
+func (track Track) CloseBidding(db *gorm.DB) {
+	track.BiddingOpen = true
+
+	db.Save(&track)
+}
+
 type byAmount []Bid
 
 func (s byAmount) Len() int {
